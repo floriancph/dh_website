@@ -2,7 +2,7 @@
 import json
 from flask import Flask, Response, render_template
 from webapp.flaskrun import flaskrun
-import get_key
+import webapp.get_key as get_key
 
 application = Flask(__name__)
 
