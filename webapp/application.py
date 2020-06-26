@@ -1,6 +1,6 @@
 #!flask/bin/python
 import json
-from flask import Flask, Response
+from flask import Flask, Response, render_template
 from webapp.flaskrun import flaskrun
 
 application = Flask(__name__)
