@@ -8,8 +8,8 @@ application = Flask(__name__)
 
 @application.route('/', methods=['GET'])
 def get():
-    
-    return render_template('index.html', top_three_news=[], total_news_results=[])
+    pas = get_key.get_secret("influxdb")
+    return render_template('index.html', top_three_news=[], total_news_results=[], user=pas['user'])
     # return Response(json.dumps({'Output': 'Moin!!'}), mimetype='application/json', status=200)
 
 @application.route('/test', methods=['GET'])
