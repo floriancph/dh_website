@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-0" align="center">
+
+  <div class="jumbotron shadow">
+    <h1 class="display-4">Deutschland im Überblick</h1>
+    <hr class="my-4">
+    <p>Aktuelle Trends in Deutschland auf den ersten Blick. Dazu sammeln wir Daten von verschiedensten Plattformen und stellen diese als Überblick zur Verfügung.</p>
+  </div>
+
+  <div class="container mb-3">
+    <div class="row">
+      <div class="col-md-4 mb-1">
+        <div class="card shadow" style="width: 100%; height: 100%;">
+          <div class="card-body">
+            <h5 class="card-title">Soziale Netzwerke & Medien</h5>
+            {% if top_three_news|length > 0 %}
+            <div class="list-group">
+              {% for news in top_three_news %}
+              <a href="#" class="list-group-item list-group-item-action">{{ news.trend }}
+                <span class="badge badge-primary badge-pill">{{ (news.number_of_articles/total_news_results*100)|round|int}}%</span>
+              </a>
+              {% endfor %}
+            </div>
+            <a href="/social" class="btn btn-primary mt-2">Mehr</a>
+              {% else %}
+                <p>Leider sind gerade keine Trends verfügbar</p>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-1">
+        <div class="card shadow" style="width: 100%; height: 100%;">
+          <div class="card-body">
+            <h5 class="card-title">Infrastruktur</h5>
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-action">Deutsche Bahn Verkehr
+                <span class="badge badge-danger badge-pill">7%</span>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action">Luftverkehr
+                <span class="badge badge-primary badge-pill">14%</span>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action">Telekommunikations-Netz
+                <span class="badge badge-primary badge-pill">14%</span>
+              </a>
+            </div>
+            <a href="#" class="btn btn-primary mt-2">Mehr</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-1">
+        <div class="card shadow" style="width: 100%; height: 100%;">
+          <div class="card-body">
+            <h5 class="card-title">Auch interessant</h5>
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-action list-group-item-info">#Hallo</a>
+              <a href="#" class="list-group-item list-group-item-action list-group-item-info">#sldfs</a>
+              <a href="#" class="list-group-item list-group-item-action list-group-item-info">#Netz</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md-8 mb-1">
+        <div class="card shadow" style="width: 100%; height: 100%;">
+          <div class="card-body">
+            <h5 class="card-title">Wirtschaft</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Wirtschafts-Aspekte in Deutschland beleuchtet</h6>
+            <p class="card-text">Börse, DAX, KPIs, etc.</p>
+            <a href="#" class="btn btn-primary mt-2">Mehr</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-1">
+        <div class="card shadow" style="width: 100%; height: 100%;">
+          <div class="card-body">
+            <h5 class="card-title">Sonderthemen</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary mt-2">Card link</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock content %}

@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-0 px-1" align="center">
+
+  <div class="jumbotron">
+    <h1 class="display-4">Soziale Netzwerke & Medien</h1>
+    <hr class="my-4">
+    <a class="btn btn-primary" href="/graph" role="button">Trends als Graph anzeigen</a>
+  </div>
+  {% if x_values|length > 0 %}
+          <h4>Medienpräsenz der Trends</h4>
+            <canvas id="myChart1"></canvas>
+          <!-- <script src="/static/chart.js"></script> -->
+          <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+          <script>
+            var list1 = {{ y_values | tojson }};
+            data = {
+                datasets: [{
+                    data: JSON.parse("{{ x_values }}"),
+                    backgroundColor: 'rgba(66, 245, 182, 0.5)',
+                    borderColor: 'rgba(66, 245, 182, 1.0)',
+                    borderWidth: 2,
+                    hoverBackgroundColor: 'rgba(66, 129, 245, 0.5)',
+                    label: 'Anzahl der Artikel via news.api',
+                }],
+
+                // These labels appear in the legend and in the tooltips when hovering different arcs
+                labels: list1
+            };
+            var ctx = document.getElementById('myChart1').getContext('2d');
+            var myPieChart = new Chart(ctx, {
+                type: 'bar',
+                data: data,
+                options: {
+                  elements: {
+                    point: {
+                      radius: 0
+                    }
+                  }
+                }
+            });
+          </script>
+      {% else %}
+      <h4>Leider sind gerade keine Trends verfügbar</h4>
+      {% endif %}
+
+    <div class="mx-1" align="center">
+    {% for i in db_result %}
+    <div class="col-sm-8 my-2 px-1">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ i['trend'] }}</h5>
+          <p class="card-text">{{ i['time'][:16].replace("T", " ") }}</p>
+          {% if i['wiki_summary'] %}
+          <p class="card-text">{{ i['wiki_summary'][:200] }}...</p>
+          <a href="{{ i['wiki_url'] }}" class="btn btn-primary">Mehr Infos</a>
+          {% endif %}
+          <p class="card-text mt-3">Twitter-Hashtags</p>
+          {% for hashtag in i['twitter_hashtags'] %}
+          <a href="/hashtag/{{ hashtag }}"><span class="badge badge-pill badge-primary">#{{ hashtag }}</span></a>
+          {% endfor %}
+          <p class="card-text mt-3">Tweets</p>
+            {% for tweet in i['influencial_tweets'] %}
+            <blockquote class="twitter-tweet"><p lang="de" dir="ltr">{{ tweet }}</p>&mdash; tweet <a href="{{tweet}}">today</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    </div>
+
+    {% if top_news|length > 0 %}
+    <div class="mx-4" align="center">
+      {% for news in top_news[:5] %}
+      <div class="col-sm-8 my-2">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ news['title'] }}</h5>
+            <p class="card-text">{{ news['publishedAt'][:16] }}</p>
+            {% if news['content'] %}
+            <p class="card-text">{{ news['content'][:150] }}...</p>
+            {% endif %}
+            <a href="{{ news['url'] }}" class="btn btn-primary">Weiter lesen</a>
+            {% if news['urlToImage'] %}
+            <img src="{{ news['urlToImage'] }}" class="img-fluid mt-1" alt="Responsive image">
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      </div>
+      {% endif %}
+  </div>
+
+{% endblock content %}

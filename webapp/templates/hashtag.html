@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-0 px-1" align="center">
+  <div class="jumbotron">
+    <h1 class="display-4">Alles zu #{{ hashtag }}</h1>
+    <p class="lead">tbd</p>
+    <hr class="my-4">
+    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+  </div>
+
+  <h4>Popularität von #{{ hashtag }}</h4>
+            <canvas id="myChart2"></canvas>
+          <!-- <script src="/static/chart.js"></script> -->
+          <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+          <script>
+            var list1 = {{ datum | safe }};
+            data = {
+                datasets: [{
+                    data: {{ werte|safe }},
+                    backgroundColor: 'rgba(66, 245, 182, 0.5)',
+                    borderColor: 'rgba(66, 245, 182, 1.0)',
+                    borderWidth: 2,
+                    hoverBackgroundColor: 'rgba(66, 129, 245, 0.5)',
+                    label: 'Auftreten des Hashtags in Zusammenhang mit Google Trends',
+                }],
+
+                // These labels appear in the legend and in the tooltips when hovering different arcs
+                labels: list1
+            };
+            var ctx = document.getElementById('myChart2').getContext('2d');
+            var myPieChart = new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: {
+                  elements: {
+                    point: {
+                      radius: 2
+                    }
+                  }
+                }
+            });
+          </script>
+
+  <div class="mx-1" align="center">
+    {% for i in list_of_trends %}
+    <div class="col-sm-8 my-2 px-1">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ i['trend'] }}</h5>
+          <p class="card-text">{{ i['time'][:16].replace("T", " ") }}</p>
+          {% if i['wiki_summary'] %}
+          <p class="card-text">{{ i['wiki_summary'][:200] }}...</p>
+          <a href="{{ i['wiki_url'] }}" class="btn btn-primary">Mehr Infos</a>
+          {% endif %}
+          <p class="card-text mt-3">Twitter-Hashtags</p>
+          {% for hashtag in i['twitter_hashtags'] %}
+          <a href="/hashtag/{{ hashtag }}"><span class="badge badge-pill badge-primary">#{{ hashtag }}</span></a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    </div>
+
+  </div>
+
+{% endblock content %}
