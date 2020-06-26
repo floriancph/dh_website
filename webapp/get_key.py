@@ -1,12 +1,9 @@
-"""
 import boto3
 import base64
 from botocore.exceptions import ClientError
 import json
-"""
 
 def get_secret(secret_name):
-    """
     region_name = "eu-central-1"
 
     try:
@@ -28,6 +25,6 @@ def get_secret(secret_name):
         answer = json.loads(get_secret_value_response['SecretString'])
     except:
         answer = {'user': 'fail'}
-    """
-    return 'helllo'
+
+    return answer
             
