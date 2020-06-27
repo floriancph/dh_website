@@ -7,4 +7,5 @@ from webapp.get_key import get_secret
 database = 'test'
 
 def testings():
-    return database
+    sec = get_secret('influxdb')
+    return sec['user']
