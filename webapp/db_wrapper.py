@@ -1,4 +1,4 @@
-# from influxdb import InfluxDBClient
+from influxdb import InfluxDBClient
 import requests, json
 import pandas as pd
 import datetime as dt
