@@ -24,7 +24,7 @@ def get_secret(secret_name):
 
         answer = json.loads(get_secret_value_response['SecretString'])
     except:
-        answer = {'user': 'fail', 'hosty': 'fail', 'port': '0000', 'pw': 'fail'}
+        answer = {'user': 'fail', 'host': 'fail', 'port': '0000', 'pw': 'fail'}
 
     return answer
 
