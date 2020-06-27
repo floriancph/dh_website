@@ -15,7 +15,15 @@ def index():
 @application.route('/social', methods=['GET'])
 def social():
     db_result = getSocial() # Get latest Trends (db-write within last 60mins. & sorted by no. of articles)
-    return render_template('social.html', db_result=db_result)
+    x_values = []
+    y_values = []
+
+    if len(db_result) > 0:
+        for trend in db_result:
+            x_values.append(trend['number_of_articles'])
+            y_values.append(trend['trend'])
+
+    return render_template('social.html', db_result=db_result, x_values=x_values, y_values=y_values)
 
 if __name__ == '__main__':
     flaskrun(application)

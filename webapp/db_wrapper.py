@@ -54,16 +54,6 @@ def getSocial():
     
     return result
 
-def getTopNews():
-    sec = get_secret('influxdb')
-    try:
-        client = InfluxDBClient(host=sec['host'], port=int(sec['port']), username=sec['user'], password=sec['pw'], ssl=False, verify_ssl=False)
-        result = client.query("SELECT * FROM social WHERE time > (now() - 120m)", database=database)
-        result = list(result)
-    except:
-        result = []
-    return result
-
 ###### LANDING PAGE ######
 
 def getTotalNewsResults():

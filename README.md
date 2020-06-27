@@ -44,7 +44,7 @@ local computer. You can find instructions in the AWS CodeStar user guide at http
 
 2. Activate the virtual environment:
 
-        $ activate ./venv/bin/activate
+        $ source .venv/bin/activate
 
 3. Install Python dependencies for this project:
 
@@ -56,7 +56,7 @@ local computer. You can find instructions in the AWS CodeStar user guide at http
 
 5. Start the Flask development server:
 
-        $ python helloworld/application.py --port 8000
+        $ python webapp/application.py --port 8000
 
 6. Open http://127.0.0.1:8000/ in a web browser to view the output of your
    service.

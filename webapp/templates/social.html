@@ -70,28 +70,6 @@
     </div>
     {% endfor %}
     </div>
-
-    {% if top_news|length > 0 %}
-    <div class="mx-4" align="center">
-      {% for news in top_news[:5] %}
-      <div class="col-sm-8 my-2">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">{{ news['title'] }}</h5>
-            <p class="card-text">{{ news['publishedAt'][:16] }}</p>
-            {% if news['content'] %}
-            <p class="card-text">{{ news['content'][:150] }}...</p>
-            {% endif %}
-            <a href="{{ news['url'] }}" class="btn btn-primary">Weiter lesen</a>
-            {% if news['urlToImage'] %}
-            <img src="{{ news['urlToImage'] }}" class="img-fluid mt-1" alt="Responsive image">
-            {% endif %}
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-      </div>
-      {% endif %}
   </div>
 
 {% endblock content %}

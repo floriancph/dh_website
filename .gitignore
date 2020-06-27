@@ -1,0 +1,6 @@
+.venv
+.vscode
+.eggs
+build
+dist
+webapp.egg-info
