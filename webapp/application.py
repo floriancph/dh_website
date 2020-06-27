@@ -2,7 +2,7 @@
 import json
 from flask import Flask, Response, render_template
 from webapp.flaskrun import flaskrun
-from webapp.db_wrapper import getTopThreeNews, getTotalNewsResults, getSocial, getTopNews
+from webapp.db_wrapper import getTopThreeNews, getTotalNewsResults, getSocial
 
 application = Flask(__name__)
 
