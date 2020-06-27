@@ -59,9 +59,9 @@ def getTopNews():
     try:
         client = InfluxDBClient(host=sec['host'], port=int(sec['port']), username=sec['user'], password=sec['pw'], ssl=False, verify_ssl=False)
         result = client.query("SELECT * FROM social WHERE time > (now() - 120m)", database=database)
+        result = list(result)
     except:
         result = []
-    result = list(result)
     return result
 
 ###### LANDING PAGE ######
@@ -77,15 +77,3 @@ def getTopThreeNews():
     trends = getSocial()
     top_three_trends = sortTrends(trends, 'number_of_articles')
     return top_three_trends[:3]
-
-
-"""
-def dbs():
-    sec = get_secret('influxdb')
-    try:
-        client = InfluxDBClient(host=sec['host'], port=int(sec['port']), username=sec['user'], password=sec['pw'], ssl=False, verify_ssl=False)
-        result = client.query("SELECT * FROM social WHERE time > (now() - 120m)", database=database)
-        return (sec['user'], len(result))
-    except:
-        return (sec['user'], 0)
-"""
