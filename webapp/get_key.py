@@ -29,5 +29,5 @@ def get_secret(secret_name):
     return answer
 
 # ge = get_secret('influxdb')
-# print(f'{ge["host"]}')
+# print(ge["hosty"])
             

@@ -8,6 +8,6 @@ database = 'test'
 
 def testings():
     sec = get_secret('influxdb')
-    client = InfluxDBClient(host=sec['host'], port=int(sec['port']), username=sec['user'], password=sec['pw'], ssl=False, verify_ssl=False)
+    client = InfluxDBClient(host=sec['hosty'], port=int(sec['port']), username=sec['user'], password=sec['pw'], ssl=False, verify_ssl=False)
     result = client.query("SELECT * FROM social WHERE time > (now() - 120m)", database=database)
     return (sec['user'], len(result))
