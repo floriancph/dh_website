@@ -4,7 +4,7 @@ from flask import Flask, Response, render_template
 from webapp.flaskrun import flaskrun
 from webapp.db_wrapper import getTopThreeNews, getTotalNewsResults, getSocial, getHashtagResults, KnowledgeGraph
 
-application = Flask(__name__)
+application = Flask(__name__, static_url_path='/static')
 
 @application.route('/', methods=['GET'])
 def index():
