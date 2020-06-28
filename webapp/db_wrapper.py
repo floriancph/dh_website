@@ -121,3 +121,22 @@ def getHashtagResults(twitter_hashtag):
     datum = summen['date'].values.tolist()
     werte = summen['count'].values.tolist()
     return [list(trends_consolidated.keys()), datum, werte, hashtags_consolidated]
+
+
+###### KNOWLEDGE GRAPH ####
+
+def KnowledgeGraph():
+    sec = get_secret('influxdb')
+    try:
+        client = InfluxDBClient(host=sec['host'], port=int(sec['port']), username=sec['user'], password=sec['pw'], ssl=False, verify_ssl=False)
+        result = client.query("SELECT * FROM social WHERE time > (now() - 120m)", database=database)
+    except:
+        result = []
+        
+    if len(result) > 0:
+        result = formatQueryResult(result)
+        send = {"data": result}
+        r = requests.post('https://04cdmjq6ga.execute-api.eu-central-1.amazonaws.com/default/KnowledgeGraph', data=json.dumps(send))
+        return json.loads(r.text)
+    else:
+        return 0

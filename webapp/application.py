@@ -2,7 +2,7 @@
 import json
 from flask import Flask, Response, render_template
 from webapp.flaskrun import flaskrun
-from webapp.db_wrapper import getTopThreeNews, getTotalNewsResults, getSocial, getHashtagResults
+from webapp.db_wrapper import getTopThreeNews, getTotalNewsResults, getSocial, getHashtagResults, KnowledgeGraph
 
 application = Flask(__name__)
 
@@ -34,6 +34,30 @@ def byHashtag(hashtag):
     werte = db_result[2]
     hashtags = db_result[3]
     return render_template('hashtag.html', list_of_trends=list_of_trends, hashtag=hashtag, datum=datum, werte=werte, hashtags=hashtags)
+
+@application.route('/graph', methods=['GET'])
+def graph():
+    result = KnowledgeGraph()
+    if result != 0:
+        return render_template('force.html', result=result)
+    else:
+        return render_template('error.html')
+
+@application.route('/getMyJson')
+def getMyJson():
+    result = KnowledgeGraph()
+    response = Response(response=json.dumps(result), status=200, mimetype="application/json")
+    return(response)
+
+######## ERROR HANDLING ########
+
+@application.errorhandler(404)
+def page_not_found(e):
+    return render_template('error.html'), 404
+
+@application.errorhandler(505)
+def internal_server_error(e):
+    return render_template('error.html'), 505
 
 if __name__ == '__main__':
     flaskrun(application)
