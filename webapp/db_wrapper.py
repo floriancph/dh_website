@@ -67,3 +67,57 @@ def getTopThreeNews():
     trends = getSocial()
     top_three_trends = sortTrends(trends, 'number_of_articles')
     return top_three_trends[:3]
+
+##### HASHTAG PAGE ######
+
+def getHashtagResults(twitter_hashtag):
+    sec = get_secret('influxdb')
+    try:
+        client = InfluxDBClient(host=sec['host'], port=int(sec['port']), username=sec['user'], password=sec['pw'], ssl=False, verify_ssl=False)
+        result = client.query("SELECT * FROM social", database=database)
+        result = formatQueryResult(result)
+    except:
+        result = []
+    
+    list_of_trends = []
+    for element in result:
+        if twitter_hashtag in element['twitter_hashtags']:
+            list_of_trends.append(element)
+
+    # Summarize list_of_trends
+    trends_consolidated = {} # Dict der konsolidierten Trends zum Hashtag
+    hashtags_consolidated = {} # TODO hashtags_consolidated = {} # Dict der konsolidierten Hashtags zum Hashtag 
+    data = []  # Liste der Datum an denen der Hashtag vorkommt
+    columns = ['date'] # Spaltenebezeichnung im Pandas DataFrame
+
+    for trend in list_of_trends:
+        # Füge die Trend-Bezeichnung in die konsolidierte Liste hinzu
+        if trend['trend'].upper() in trends_consolidated: 
+            trends_consolidated[trend['trend'].upper()] += 1
+        else:
+            trends_consolidated[trend['trend'].upper()] = 1
+        
+        if trend['trend'].upper() not in hashtags_consolidated:
+            hashtags_consolidated[trend['trend'].upper()] = {}
+        for hashtag in trend['twitter_hashtags']:
+            if hashtag in hashtags_consolidated[trend['trend'].upper()]:
+                hashtags_consolidated[trend['trend'].upper()][hashtag] += 1
+            else:
+                hashtags_consolidated[trend['trend'].upper()][hashtag] = 1
+
+        date = trend['time'][:10] # Hole Datum aus Trend heraus
+        data.append(date) # Füge das Datum der Liste hinzu
+
+    # sort dict:
+    trends_consolidated = {k: v for k, v in sorted(trends_consolidated.items(), key=lambda item: item[1], reverse=True)}
+    for trend in list(hashtags_consolidated.keys()):
+        rearrange = hashtags_consolidated[trend]
+        rearrange = {k: v for k, v in sorted(rearrange.items(), key=lambda item: item[1], reverse=True)}
+        hashtags_consolidated[trend] = list(rearrange.keys())
+
+    df = pd.DataFrame(data, columns=columns)
+    df['count'] = 1
+    summen = df.groupby(['date'], as_index = False).sum()
+    datum = summen['date'].values.tolist()
+    werte = summen['count'].values.tolist()
+    return [list(trends_consolidated.keys()), datum, werte, hashtags_consolidated]

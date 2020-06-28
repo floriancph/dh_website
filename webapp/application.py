@@ -2,7 +2,7 @@
 import json
 from flask import Flask, Response, render_template
 from webapp.flaskrun import flaskrun
-from webapp.db_wrapper import getTopThreeNews, getTotalNewsResults, getSocial
+from webapp.db_wrapper import getTopThreeNews, getTotalNewsResults, getSocial, getHashtagResults
 
 application = Flask(__name__)
 
@@ -24,6 +24,16 @@ def social():
             y_values.append(trend['trend'])
 
     return render_template('social.html', db_result=db_result, x_values=x_values, y_values=y_values)
+
+@application.route('/hashtag/<hashtag>', methods=['GET'])
+def byHashtag(hashtag):
+    hashtag = hashtag.lower()
+    db_result = getHashtagResults(hashtag)
+    list_of_trends = db_result[0]
+    datum = json.dumps(db_result[1])
+    werte = db_result[2]
+    hashtags = db_result[3]
+    return render_template('hashtag.html', list_of_trends=list_of_trends, hashtag=hashtag, datum=datum, werte=werte, hashtags=hashtags)
 
 if __name__ == '__main__':
     flaskrun(application)
