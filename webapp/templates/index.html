@@ -19,7 +19,7 @@
             {% if top_three_news|length > 0 %}
             <div class="list-group">
               {% for news in top_three_news %}
-              <a href="#" class="list-group-item list-group-item-action">{{ news.trend }}
+              <a href="/hashtag/{{ news.trend }}" class="list-group-item list-group-item-action">{{ news.trend }}
                 <span class="badge badge-primary badge-pill">{{ (news.number_of_articles/total_news_results*100)|round|int}}%</span>
               </a>
               {% endfor %}
