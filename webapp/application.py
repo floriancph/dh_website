@@ -43,6 +43,10 @@ def graph():
     else:
         return render_template('error.html')
 
+@application.route('/about', methods=['GET'])
+def about():
+    return render_template('about.html')
+
 @application.route('/getMyJson')
 def getMyJson():
     result = KnowledgeGraph()
